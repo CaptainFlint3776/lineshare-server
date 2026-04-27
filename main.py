@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 
 app = Flask(__name__)
-
 lines = []
 
 @app.route('/add_line', methods=['POST'])
@@ -16,7 +15,7 @@ def add_line():
         'timestamp': datetime.now().isoformat()
     }
     lines.append(line)
-    print("受信: " + str(line))
+    print("received: " + str(line))
     return jsonify({'status': 'ok', 'line': line})
 
 @app.route('/get_lines', methods=['GET'])
