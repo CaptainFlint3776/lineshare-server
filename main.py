@@ -16,6 +16,7 @@ def add_line():
         'timestamp': datetime.now().isoformat()
     }
     lines.append(line)
+    print("受信: " + str(line))
     return jsonify({'status': 'ok', 'line': line})
 
 @app.route('/get_lines', methods=['GET'])
