@@ -4,7 +4,7 @@ from datetime import datetime
 app = Flask(__name__)
 lines = []
 
-@app.route('/add_line', methods=['POST'])
+@app.route('/add_line', methods=['POST', 'GET'])
 def add_line():
     data = request.json
     line = {
