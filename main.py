@@ -6,19 +6,22 @@ lines = []
 
 @app.route('/add_line', methods=['POST', 'GET'])
 def add_line():
-    data = request.get_json(force=True)
-    if not data:
-        data = request.json or {}
-    line = {
-        'user': data.get('user', 'anonymous'),
-        'pair': data.get('pair', 'USDJPY'),
-        'price': data.get('price', 0),
-        'timeframe': data.get('timeframe', 'H1'),
-        'timestamp': datetime.now().isoformat()
-    }
-    lines.append(line)
-    print("received: " + str(line))
-    return jsonify({'status': 'ok', 'line': line})
+    try:
+        data = request.get_json(force=True, silent=True)
+        if data is None:
+            data = {}
+        line = {
+            'user': data.get('user', 'anonymous'),
+            'pair': data.get('pair', 'USDJPY'),
+            'price': data.get('price', 0),
+            'timeframe': data.get('timeframe', 'H1'),
+            'timestamp': datetime.now().isoformat()
+        }
+        lines.append(line)
+        print("received: " + str(line))
+        return jsonify({'status': 'ok', 'line': line})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/get_lines', methods=['GET'])
 def get_lines():
