@@ -7,11 +7,11 @@ lines = []
 @app.route('/add_line', methods=['POST', 'GET'])
 def add_line():
     try:
-        import json
-        raw = request.data
-        print("raw data: " + str(raw))
-        data = json.loads(raw)
-        print("parsed: " + str(data))
+        data = request.get_json(force=True, silent=True)
+        if data is None:
+            body = request.data.decode('utf-8')
+            import json
+            data = json.loads(body) if body else {}
         line = {
             'user': str(data.get('user', 'anonymous')),
             'pair': str(data.get('pair', 'USDJPY')),
@@ -20,8 +20,6 @@ def add_line():
             'timestamp': str(datetime.now())
         }
         lines.append(line)
-        print("received: " + str(line))
         return jsonify({'status': 'ok', 'line': line})
     except Exception as e:
-        print("error: " + str(e))
         return jsonify({'error': str(e)}), 500
