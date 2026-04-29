@@ -10,12 +10,13 @@ def add_line():
         data = request.get_json(force=True, silent=True)
         if data is None:
             data = {}
+        price_val = data.get('price', 0)
         line = {
             'user': data.get('user', 'anonymous'),
             'pair': data.get('pair', 'USDJPY'),
-            'price': data.get('price', 0),
+            'price': price_val,
             'timeframe': data.get('timeframe', 'H1'),
-            'timestamp': datetime.now().isoformat()
+            'timestamp': str(datetime.now())
         }
         lines.append(line)
         print("received: " + str(line))
