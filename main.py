@@ -6,7 +6,9 @@ lines = []
 
 @app.route('/add_line', methods=['POST', 'GET'])
 def add_line():
-    data = request.json
+    data = request.get_json(force=True)
+    if not data:
+        data = request.json or {}
     line = {
         'user': data.get('user', 'anonymous'),
         'pair': data.get('pair', 'USDJPY'),
